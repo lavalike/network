@@ -1,8 +1,8 @@
-# dimeno-network
+# network
 >基于OkHttp3网络框架
 
 [![Platform](https://img.shields.io/badge/Platform-Android-00CC00.svg?style=flat)](https://www.android.com)
-[![](https://jitpack.io/v/dimeno-tech/dimeno-network.svg)](https://jitpack.io/#dimeno-tech/dimeno-network)
+[![](https://jitpack.io/v/lavalike/network.svg)](https://jitpack.io/#lavalike/network)
 
 ### 依赖导入
 
@@ -21,7 +21,7 @@ allprojects {
 
 ``` gradle
 dependencies {
-	implementation 'com.github.dimeno-tech:dimeno-network:0.0.9'
+	implementation 'com.github.lavalike:network:0.0.9'
 }
 ```
 
