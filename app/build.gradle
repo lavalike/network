@@ -4,7 +4,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.dimeno.network.sample"
+        applicationId "com.wangzhen.network.sample"
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1

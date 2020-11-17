@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <com.dimeno.network.loading.LoadingView
+        <com.wangzhen.network.loading.LoadingView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:border_color="#3b424c"
