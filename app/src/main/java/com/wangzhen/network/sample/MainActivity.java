@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_post_form:
                 postForm();
-                postJson();
                 break;
             case R.id.btn_upload:
                 PermissionManager.request(this, new AbsPermissionCallback() {

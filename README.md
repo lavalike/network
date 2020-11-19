@@ -43,6 +43,7 @@ public static class Builder {
     public Builder connectTimeout(long connectTimeout);
     public Builder readTimeout(long readTimeout);
     public Builder writeTimeout(long writeTimeout);
+    public Builder debug(boolean debug);
     public NetConfig build();
 }
 ```
@@ -151,3 +152,13 @@ new DefaultLoadingPage(recycler).setDelay(3000).setDuration(2000)
 3、自定义加载页
 
 继承 **AbsLoadingPage** 并处理对应逻辑，如有疑问请参照 **DefaultLoadingPage**
+
+### 错误输出
+
+初始化配置时，**debug** 默认为 **false**，输出较为友好的统一提示，配置为 **true** 可输出具体错误信息
+
+``` java
+Network.init(new NetConfig.Builder()
+        .debug(true)
+        .build());
+```
