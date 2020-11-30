@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="LoadingView">
         <attr name="radius" format="dimension" />
+        <attr name="back_color" format="color" />
         <attr name="border_color" format="color" />
         <attr name="border_width" format="dimension" />
     </declare-styleable>

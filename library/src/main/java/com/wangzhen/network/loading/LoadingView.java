@@ -24,15 +24,16 @@ public class LoadingView extends View {
     private int mWidth;
     private int mHeight;
     private final Paint mPaint;
+    private final Paint mPaintBack;
 
     private int startAngle = -90;
     private int minAngle = -90;
     private int sweepAngle = 0;
     private int curAngle = 0;
 
-    private final RectF mRect;
+    private final int radius;
 
-    private ValueAnimator mAnimator;
+    private final RectF mRect;
 
     public LoadingView(Context context) {
         this(context, null);
@@ -46,8 +47,9 @@ public class LoadingView extends View {
         super(context, attrs, defStyleAttr);
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.LoadingView);
-        int radius = (int) typedArray.getDimension(R.styleable.LoadingView_radius, dip2px(20));
+        radius = (int) typedArray.getDimension(R.styleable.LoadingView_radius, dip2px(20));
         int color = typedArray.getColor(R.styleable.LoadingView_border_color, Color.WHITE);
+        int backColor = typedArray.getColor(R.styleable.LoadingView_back_color, Color.WHITE);
         float strokeWidth = typedArray.getDimension(R.styleable.LoadingView_border_width, dip2px(2));
         typedArray.recycle();
 
@@ -56,6 +58,12 @@ public class LoadingView extends View {
         mPaint.setStrokeWidth(strokeWidth);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
+
+        mPaintBack = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintBack.setColor(backColor);
+        mPaintBack.setStrokeWidth(strokeWidth);
+        mPaintBack.setStyle(Paint.Style.STROKE);
+        mPaintBack.setStrokeCap(Paint.Cap.ROUND);
 
         mRect = new RectF(-radius, -radius, radius, radius);
 
@@ -70,26 +78,31 @@ public class LoadingView extends View {
     }
 
     private void startAnimator() {
-        mAnimator = ValueAnimator.ofFloat(0, 1);
-        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 invalidate();
             }
         });
-        mAnimator.setRepeatCount(Animation.INFINITE);
-        mAnimator.setRepeatMode(Animation.RESTART);
-        mAnimator.setDuration(2000);
-        mAnimator.start();
+        animator.setRepeatCount(Animation.INFINITE);
+        animator.setRepeatMode(Animation.RESTART);
+        animator.setDuration(2000);
+        animator.start();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.translate(mWidth * 1f / 2, mHeight * 1f / 2);
         drawCircle(canvas);
+        canvas.translate(mWidth * 1f / 2, mHeight * 1f / 2);
+        drawRing(canvas);
     }
 
     private void drawCircle(Canvas canvas) {
+        canvas.drawCircle(mWidth * 1f / 2, mHeight * 1f / 2, radius, mPaintBack);
+    }
+
+    private void drawRing(Canvas canvas) {
         if (startAngle == minAngle) {
             sweepAngle += 6;
         }

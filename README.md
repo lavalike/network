@@ -21,7 +21,7 @@ allprojects {
 
 ``` gradle
 dependencies {
-	implementation 'com.github.lavalike:network:0.0.9'
+	implementation 'com.github.lavalike:network:0.0.1'
 }
 ```
 
