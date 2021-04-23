@@ -1,0 +1,75 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+def username
+def password
+
+ext {
+    File file = new File(project.rootDir, "local.properties")
+    if (file.exists()) {
+        Properties properties = new Properties()
+        properties.load(file.newDataInputStream())
+        username = properties.getProperty("oss.username")
+        password = properties.getProperty("oss.password")
+    } else {
+        throw new Exception("local.properties does not exist")
+    }
+}
+
+def PUBLISH_GROUP_ID = 'io.github.lavalike'
+def PUBLISH_ARTIFACT_ID = "network"
+def PUBLISH_VERSION = "0.0.1"
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: username, password: password)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: username, password: password)
+            }
+
+            pom.groupId = PUBLISH_GROUP_ID
+            pom.artifactId = PUBLISH_ARTIFACT_ID
+            pom.version = PUBLISH_VERSION
+
+            pom.project {
+                name 'network'
+                packaging 'aar'
+                description '基于OKHttp的网络组件'
+                url 'http://github.com/lavalike'
+
+                scm {
+                    connection 'scm:https://github.com/lavalike/network.git'
+                    developerConnection 'scm:git@github.com:lavalike/network.git'
+                    url 'https://github.com/lavalike/network'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'lavalike'
+                        name 'wangzhen'
+                        email 'lavalike@yeah.net'
+                    }
+                }
+            }
+        }
+    }
+}
