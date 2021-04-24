@@ -33,6 +33,9 @@ gpg --full-gen-key
 ``` shell
 gpg --keyserver hkp://pool.sks-keyservers.net --send-keys 公钥ID
 gpg --keyserver hkp://keyserver.ubuntu.com:11371 --send-keys 公钥ID
+
+查询
+gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 公钥ID
 ```
 
 ### 4、创建gpg文件
