@@ -3,7 +3,7 @@ apply plugin: 'signing'
 
 def PUBLISH_GROUP_ID = 'io.github.lavalike'
 def PUBLISH_ARTIFACT_ID = "network"
-def PUBLISH_VERSION = "0.0.1"
+def PUBLISH_VERSION = "0.0.2"
 
 signing {
     required { gradle.taskGraph.hasTask("uploadArchives") }
@@ -57,4 +57,13 @@ uploadArchives {
             }
         }
     }
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives androidSourcesJar
 }
