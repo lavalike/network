@@ -5,14 +5,14 @@ def username
 def password
 
 ext {
-    File file = new File(project.rootDir, "local.properties")
+    File file = new File(project.rootDir, ".gradle/gradle.properties")
     if (file.exists()) {
         Properties properties = new Properties()
         properties.load(file.newDataInputStream())
         username = properties.getProperty("oss.username")
         password = properties.getProperty("oss.password")
     } else {
-        throw new Exception("local.properties does not exist")
+        throw new FileNotFoundException("gradle.properties does not exist in dir '.gradle'")
     }
 }
 

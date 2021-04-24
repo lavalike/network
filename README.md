@@ -4,6 +4,10 @@
 [![Platform](https://img.shields.io/badge/Platform-Android-00CC00.svg?style=flat)](https://www.android.com)
 [![](https://jitpack.io/v/lavalike/network.svg)](https://jitpack.io/#lavalike/network)
 
+### Maven配置
+
+[Mac](MAVEN_CONFIG_MAC.md) [Windows](#)
+
 ### 依赖导入
 
 项目根目录
