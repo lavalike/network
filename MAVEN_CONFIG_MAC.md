@@ -26,7 +26,16 @@ gpg --full-gen-key
 
 目录下存在一个.rev文件，后续配置会用到该.rec文件名的末尾8位字符。
 
-### 3、创建gpg文件
+### 3、将密钥上传到服务器
+
+> 公钥ID：.rev文件名末尾8位字符
+
+``` shell
+gpg --keyserver hkp://pool.sks-keyservers.net --send-keys 公钥ID
+gpg --keyserver hkp://keyserver.ubuntu.com:11371 --send-keys 公钥ID
+```
+
+### 4、创建gpg文件
 
 切换到~/.gnupg目录，执行：
 
@@ -36,7 +45,7 @@ gpg --export-secret-keys -o secring.gpg
 
 secring.gpg文件创建过程中，输入创建密钥时设置的密码，密码验证成功后会在~/.gnupg目录生成secring.gpg文件。
 
-### 4、创建gradle.properties配置文件
+### 5、创建gradle.properties配置文件
 
 在Android工程.gradle目录下创建gradle.properties，完整路径：
 
@@ -52,7 +61,7 @@ oss.username=sonatype用户名
 oss.password=sonatype密码
 ```
 
-### 5、上传
+### 6、上传
 
 sync之后，在gradle面板中执行upload/uploadArchives，上传成功后会出现以下提示
 
@@ -65,7 +74,7 @@ BUILD SUCCESSFUL in 1m 7s
 3:25:06 PM: Task execution finished 'uploadArchives'.
 ```
 
-### 6、发布
+### 7、发布
 
 登录[https://s01.oss.sonatype.org/](https://s01.oss.sonatype.org/)，选择左侧的 **Staging Repositories**
 ![](https://tva1.sinaimg.cn/large/008i3skNgy1gpuvbw5r9tj319l0u010a.jpg)
