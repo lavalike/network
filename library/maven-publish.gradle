@@ -1,21 +1,6 @@
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-def username
-def password
-
-ext {
-    File file = new File(project.rootDir, ".gradle/gradle.properties")
-    if (file.exists()) {
-        Properties properties = new Properties()
-        properties.load(file.newDataInputStream())
-        username = properties.getProperty("oss.username")
-        password = properties.getProperty("oss.password")
-    } else {
-        throw new FileNotFoundException("gradle.properties does not exist in dir '.gradle'")
-    }
-}
-
 def PUBLISH_GROUP_ID = 'io.github.lavalike'
 def PUBLISH_ARTIFACT_ID = "network"
 def PUBLISH_VERSION = "0.0.1"
@@ -32,11 +17,11 @@ uploadArchives {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
             repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: username, password: password)
+                authentication(userName: ossUsername, password: ossPassword)
             }
 
             snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: username, password: password)
+                authentication(userName: ossUsername, password: ossPassword)
             }
 
             pom.groupId = PUBLISH_GROUP_ID

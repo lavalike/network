@@ -50,7 +50,7 @@ secring.gpg文件创建过程中，输入创建密钥时设置的密码，密码
 
 ### 5、创建gradle.properties配置文件
 
-在Android工程.gradle目录下创建gradle.properties，完整路径：
+在用户目录.gradle目录下创建gradle.properties，完整路径：
 
 > ~/.gradle/gradle.properties
 
@@ -60,8 +60,8 @@ secring.gpg文件创建过程中，输入创建密钥时设置的密码，密码
 signing.keyId=.rev文件名称末尾8位字符
 signing.password=创建密钥时所设置密码
 signing.secretKeyRingFile=secring.gpg文件路径
-oss.username=sonatype用户名
-oss.password=sonatype密码
+ossUsername=sonatype用户名
+ossPassword=sonatype密码
 ```
 
 ### 6、上传
