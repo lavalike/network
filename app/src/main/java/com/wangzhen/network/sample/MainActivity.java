@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dimeno.permission.PermissionManager;
-import com.dimeno.permission.callback.AbsPermissionCallback;
 import com.wangzhen.network.callback.LoadingCallback;
 import com.wangzhen.network.callback.ProgressCallback;
 import com.wangzhen.network.loading.DefaultLoadingPage;
@@ -21,6 +19,8 @@ import com.wangzhen.network.sample.task.TestGetTokenTask;
 import com.wangzhen.network.sample.task.TestPostFormTask;
 import com.wangzhen.network.sample.task.TestPostJsonTask;
 import com.wangzhen.network.sample.task.TestUploadTask;
+import com.wangzhen.permission.PermissionManager;
+import com.wangzhen.permission.callback.AbsPermissionCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
