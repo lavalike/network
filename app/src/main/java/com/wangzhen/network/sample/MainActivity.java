@@ -1,9 +1,7 @@
 package com.wangzhen.network.sample;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -15,15 +13,8 @@ import com.wangzhen.network.callback.ProgressCallback;
 import com.wangzhen.network.loading.DefaultLoadingPage;
 import com.wangzhen.network.sample.entity.PluginVersion;
 import com.wangzhen.network.sample.task.TestGetTask;
-import com.wangzhen.network.sample.task.TestGetTokenTask;
 import com.wangzhen.network.sample.task.TestPostFormTask;
 import com.wangzhen.network.sample.task.TestPostJsonTask;
-import com.wangzhen.network.sample.task.TestUploadTask;
-import com.wangzhen.permission.PermissionManager;
-import com.wangzhen.permission.callback.AbsPermissionCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_get).setOnClickListener(this);
         findViewById(R.id.btn_post_json).setOnClickListener(this);
         findViewById(R.id.btn_post_form).setOnClickListener(this);
-        findViewById(R.id.btn_upload).setOnClickListener(this);
         findViewById(R.id.btn_loading_page).setOnClickListener(this);
     }
 
@@ -52,68 +42,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_post_form:
                 postForm();
                 break;
-            case R.id.btn_upload:
-                PermissionManager.request(this, new AbsPermissionCallback() {
-                    @Override
-                    public void onGrant(String[] permissions) {
-                        getToken();
-                    }
-
-                    @Override
-                    public void onDeny(String[] deniedPermissions, String[] neverAskPermissions) {
-                        Toast.makeText(MainActivity.this, "需要存储权限", Toast.LENGTH_SHORT).show();
-                    }
-                }, Manifest.permission.READ_EXTERNAL_STORAGE);
-                break;
             case R.id.btn_loading_page:
                 startActivity(new Intent(this, LoadingActivity.class));
                 break;
         }
-    }
-
-    private void getToken() {
-        new TestGetTokenTask(new LoadingCallback<String>() {
-            @Override
-            public void onSuccess(String data) {
-                try {
-                    JSONObject jsonObject = new JSONObject(data);
-                    upload(jsonObject.getString("result"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(int code, String message) {
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        }).exe("gddc", "OjE1NjI4MjUxOTk1MzIsI");
-    }
-
-    private void upload(String token) {
-        new TestUploadTask(new ProgressCallback<String>() {
-            @Override
-            public void onSuccess(String data) {
-                Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onProgress(int progress) {
-                Log.e("TAG", "-> upload onProgress " + progress + " " + Thread.currentThread().getName());
-            }
-
-            @Override
-            public void onError(int code, String message) {
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        }).setTag(this)
-                .put("token", token)
-                .put("fileType", "MP3")
-                .put("param1", "4")
-                .put("param2", "{}")
-                .put("param3", "")
-                .putFile("sourceFile", Environment.getExternalStorageDirectory() + "/Recorder/sample.mp3")
-                .exe();
     }
 
     private void postForm() {
