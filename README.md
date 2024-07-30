@@ -43,7 +43,7 @@ NetConfig支持的方法：
 ```java
 public static class Builder {
     public Builder baseUrl(String baseUrl);
-    public Builder netInterceptor(Interceptor interceptor);
+    public Builder netInterceptor(Interceptor interceptor);
     public Builder interceptor(Interceptor interceptor);
     public CookieJar cookieJar;
     public Builder retryOnConnectionFailure(boolean retry);
