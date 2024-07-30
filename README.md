@@ -1,8 +1,9 @@
 # network
->基于OkHttp3网络框架
 
-[![Platform](https://img.shields.io/badge/Platform-Android-00CC00.svg?style=flat)](https://www.android.com)
-[![](https://jitpack.io/v/lavalike/network.svg)](https://jitpack.io/#lavalike/network)
+> 基于OkHttp3网络框架
+
+[![Platform](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/4cd5360d82f04d97bff4bcd018d907a1~tplv-73owjymdk6-jj-mark:0:0:0:0:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMjUwNjU0MjI0MDI0Nzk0MyJ9\&rk3s=e9ecf3d6\&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018\&x-orig-expires=1722408299\&x-orig-sign=fq4bVV7ED7UmKRmM%2Fm%2BsgN20CyY%3D)](https://www.android.com)
+[![](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/f6bb05c4eb1d47c1b613af0855246d9b~tplv-73owjymdk6-jj-mark:0:0:0:0:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMjUwNjU0MjI0MDI0Nzk0MyJ9\&rk3s=e9ecf3d6\&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018\&x-orig-expires=1722408299\&x-orig-sign=SrulS27FeiGfYIMCY6oOgWBAH4Y%3D)](https://jitpack.io/#lavalike/network)
 
 [mavenCentral迁移指南](MAVEN_CONFIG.md)
 
@@ -10,7 +11,7 @@
 
 项目根目录
 
-``` gradle
+```gradle
 allprojects {
 	repositories {
 		...
@@ -21,19 +22,23 @@ allprojects {
 
 模块目录
 
-``` gradle
+```gradle
 dependencies {
-	implementation 'com.github.lavalike:network:0.0.1'
+	implementation 'com.github.lavalike:network:0.0.3'
 }
 ```
 
-### 自定义全局配置
-> 如未初始化，网络请求请写明全路径
+### 初始化配置
+
+请在合适的地方进行初始化：
 
 ```java
-Network.init(NetConfig.Builder().build());
+Network.init(NetConfig.Builder().baseUrl(YOUR_BASE_URL).build());
 ```
-NetConfig支持方法
+
+> 也支持**开箱即用**，即：忽略初始化配置，**但需要在发起请求时指定完整 URL**。
+
+NetConfig支持的方法：
 
 ```java
 public static class Builder {
@@ -52,16 +57,16 @@ public static class Builder {
 
 ### 请求类型
 
-| 类型 |继承关系|
-| :---: | :---: |
-| GET | GetTask |
-| POST_JSON | PostJsonTask |
-| POST_FORM | PostFormTask |
-| UPLOAD | UploadTask |
+|     类型     |     继承关系     |
+| :--------: | :----------: |
+|     GET    |    GetTask   |
+| POST\_JSON | PostJsonTask |
+| POST\_FORM | PostFormTask |
+|   UPLOAD   |  UploadTask  |
 
 网络请求Task支持方法
 
-``` java
+```java
 public interface Task {
     void onSetupParams(Object... params);
     String getApi();
@@ -76,38 +81,8 @@ public interface Task {
 ```
 
 ### 发起请求
-1、使用可变参数形式请求
 
-```java
-new TestTask(new LoadingCallback<EntityType>() {
-    @Override
-    public void onSuccess(EntityType data) {
-        
-    }
-}).exe("abc", 1, true);
-```
-重写onSetupParams方法手动处理参数
-
-```java
-public class TestTask extends GetTask {
-    public <EntityType> TestTask(RequestCallback<EntityType> callback) {
-        super(callback);
-    }
-
-    @Override
-    public void onSetupParams(Object... params) {
-        put("param1", params[0]);
-        put("param2", params[1]);
-        put("param3", params[2]);
-    }
-
-    @Override
-    public String getApi() {
-        return "your api address";
-    }
-}
-```
-2、链式传递参数
+链式传递参数
 
 ```java
 new TestTask(new ProgressCallback<String>() {
@@ -121,22 +96,25 @@ new TestTask(new ProgressCallback<String>() {
 
 	}
 }).setTag(this)
-	.put("token", token)
+	.put("param", "value")
 	.putFile("sourceFile", "file url")
-	.addHeader("","")
+	.addHeader("header1","value1")
+        .addHeader("header2","value2")
 	.exe();
 ```
+
 无需重写onSetupParams方法
 
 ### 设置加载页
+
 setLoadingPage(LoadingPage page)
-> **注意**：  
-> 1、page为null无效  
-> 2、page构造参数为null无效
+
+> **注意**：\
+> 需要在LoadingPage中传入有效的布局才能成功显示Loading效果
 
 1、使用默认加载页 **DefaultLoadingPage**
 
-``` java
+```java
 new TestTask(new LoadingCallback<String>() {
     @Override
     public void onSuccess(String data) {
@@ -147,19 +125,19 @@ new TestTask(new LoadingCallback<String>() {
 
 2、LoadingPage自定义成功延迟回调与加载时长
 
-``` java
+```java
 new DefaultLoadingPage(recycler).setDelay(3000).setDuration(2000)
 ```
 
 3、自定义加载页
 
-继承 **AbsLoadingPage** 并处理对应逻辑，如有疑问请参照 **DefaultLoadingPage**
+继承 **AbsLoadingPage** 实现自定义加载 UI 及逻辑
 
 ### 错误输出
 
 初始化配置时，**debug** 默认为 **false**，输出较为友好的统一提示，配置为 **true** 可输出具体错误信息
 
-``` java
+```java
 Network.init(new NetConfig.Builder()
         .debug(true)
         .build());

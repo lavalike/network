@@ -4,30 +4,31 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context="com.wangzhen.network.sample.MainActivity">
 
     <Button
         android:id="@+id/btn_get"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="get" />
 
     <Button
         android:id="@+id/btn_post_json"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="post json" />
 
     <Button
         android:id="@+id/btn_post_form"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="post form" />
 
     <Button
         android:id="@+id/btn_loading_page"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="loading page" />
 

@@ -1,118 +1,118 @@
-package com.wangzhen.network.sample;
+package com.wangzhen.network.sample
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.wangzhen.network.callback.LoadingCallback
+import com.wangzhen.network.callback.ProgressCallback
+import com.wangzhen.network.loading.DefaultLoadingPage
+import com.wangzhen.network.sample.databinding.ActivityMainBinding
+import com.wangzhen.network.sample.entity.PluginVersion
+import com.wangzhen.network.sample.task.TestGetTask
+import com.wangzhen.network.sample.task.TestPostFormTask
+import com.wangzhen.network.sample.task.TestPostJsonTask
 
-import androidx.appcompat.app.AppCompatActivity;
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    private var testGetTask: TestGetTask? = null
 
-import com.wangzhen.network.callback.LoadingCallback;
-import com.wangzhen.network.callback.ProgressCallback;
-import com.wangzhen.network.loading.DefaultLoadingPage;
-import com.wangzhen.network.sample.entity.PluginVersion;
-import com.wangzhen.network.sample.task.TestGetTask;
-import com.wangzhen.network.sample.task.TestPostFormTask;
-import com.wangzhen.network.sample.task.TestPostJsonTask;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private TestGetTask testGetTask;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        findViewById(R.id.btn_get).setOnClickListener(this);
-        findViewById(R.id.btn_post_json).setOnClickListener(this);
-        findViewById(R.id.btn_post_form).setOnClickListener(this);
-        findViewById(R.id.btn_loading_page).setOnClickListener(this);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setEvents()
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_get:
-                get();
-                break;
-            case R.id.btn_post_json:
-                postJson();
-                break;
-            case R.id.btn_post_form:
-                postForm();
-                break;
-            case R.id.btn_loading_page:
-                startActivity(new Intent(this, LoadingActivity.class));
-                break;
+    private fun setEvents() {
+        with(binding) {
+            btnGet.setOnClickListener {
+                get()
+            }
+            btnPostJson.setOnClickListener {
+                postJson()
+            }
+            btnPostForm.setOnClickListener {
+                postForm()
+            }
+            btnLoadingPage.setOnClickListener {
+                startActivity(Intent(it.context, LoadingActivity::class.java))
+            }
         }
     }
 
-    private void postForm() {
-        new TestPostFormTask(new ProgressCallback<PluginVersion>() {
-            @Override
-            public void onStart() {
-                Log.e("TAG", "-> onStart");
+    private fun postForm() {
+        TestPostFormTask(object : ProgressCallback<PluginVersion>() {
+            override fun onStart() {
+                Log.e("TAG", "-> onStart")
             }
 
-            @Override
-            public void onProgress(int progress) {
-                Log.e("TAG", "-> postForm onProgress " + progress + " " + Thread.currentThread().getName());
+            override fun onProgress(progress: Int) {
+                Log.e(
+                    "TAG", "-> postForm onProgress " + progress + " " + Thread.currentThread().name
+                )
             }
 
-            @Override
-            public void onSuccess(PluginVersion data) {
-                Toast.makeText(MainActivity.this, "Post Form -> " + data.version_name + " " + data.version_description, Toast.LENGTH_SHORT).show();
+            override fun onSuccess(data: PluginVersion) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Post Form -> " + data.version_name + " " + data.version_description,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            @Override
-            public void onError(int code, String message) {
-                Toast.makeText(MainActivity.this, "Post Form -> " + message, Toast.LENGTH_SHORT).show();
+            override fun onError(code: Int, message: String) {
+                Toast.makeText(this@MainActivity, "Post Form -> $message", Toast.LENGTH_SHORT)
+                    .show()
             }
 
-            @Override
-            public void onComplete() {
-                Log.e("TAG", "-> onComplete");
+            override fun onComplete() {
+                Log.e("TAG", "-> onComplete")
             }
-        }).setLoadingPage(new DefaultLoadingPage(findViewById(R.id.container))).exe();
+        }).setLoadingPage(DefaultLoadingPage(findViewById(R.id.container))).exe()
     }
 
-    private void postJson() {
-        new TestPostJsonTask(new LoadingCallback<PluginVersion>() {
-            @Override
-            public void onSuccess(PluginVersion data) {
-                Toast.makeText(MainActivity.this, "Post Json -> " + data.version_name + " " + data.version_description, Toast.LENGTH_SHORT).show();
+    private fun postJson() {
+        TestPostJsonTask(object : LoadingCallback<PluginVersion>() {
+            override fun onSuccess(data: PluginVersion) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Post Json -> " + data.version_name + " " + data.version_description,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            @Override
-            public void onError(int code, String message) {
-                Toast.makeText(MainActivity.this, "Post Json -> " + message, Toast.LENGTH_SHORT).show();
+            override fun onError(code: Int, message: String) {
+                Toast.makeText(this@MainActivity, "Post Json -> $message", Toast.LENGTH_SHORT)
+                    .show()
             }
-        }).exe();
+        }).exe()
     }
 
-    private void get() {
+    private fun get() {
         if (testGetTask != null) {
-            Toast.makeText(this, "重试", Toast.LENGTH_SHORT).show();
-            testGetTask.retry();
-            return;
+            Toast.makeText(this, "重试", Toast.LENGTH_SHORT).show()
+            testGetTask!!.retry()
+            return
         }
-        testGetTask = new TestGetTask(new LoadingCallback<PluginVersion>() {
-            @Override
-            public void onSuccess(PluginVersion data) {
-                Toast.makeText(MainActivity.this, "Get -> " + data.version_name + " " + data.version_description, Toast.LENGTH_SHORT).show();
+        testGetTask = TestGetTask(object : LoadingCallback<PluginVersion>() {
+            override fun onSuccess(data: PluginVersion) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Get -> " + data.version_name + " " + data.version_description,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            @Override
-            public void onError(int code, String message) {
-                Toast.makeText(MainActivity.this, "Get -> " + message, Toast.LENGTH_SHORT).show();
+            override fun onError(code: Int, message: String) {
+                Toast.makeText(this@MainActivity, "Get -> $message", Toast.LENGTH_SHORT).show()
             }
 
-            @Override
-            public void onCancel() {
-                Toast.makeText(MainActivity.this, "请求被取消", Toast.LENGTH_SHORT).show();
+            override fun onCancel() {
+                Toast.makeText(this@MainActivity, "请求被取消", Toast.LENGTH_SHORT).show()
             }
-        });
-        testGetTask.setTag(this).exe();
+        })
+        testGetTask!!.setTag(this).exe()
     }
 }

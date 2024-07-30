@@ -1,25 +1,17 @@
-package com.wangzhen.network.sample.task;
+package com.wangzhen.network.sample.task
 
-import com.wangzhen.network.callback.RequestCallback;
-import com.wangzhen.network.task.GetTask;
+import com.wangzhen.network.callback.RequestCallback
+import com.wangzhen.network.task.GetTask
 
 /**
  * TestGetTask
  * Created by wangzhen on 2020/4/15.
  */
-public class TestGetTask extends GetTask {
-
-    public <EntityType> TestGetTask(RequestCallback<EntityType> callback) {
-        super(callback);
+class TestGetTask(callback: RequestCallback<*>?) : GetTask(callback) {
+    override fun onSetupParams(vararg params: Any) {
     }
 
-    @Override
-    public void onSetupParams(Object... params) {
-
-    }
-
-    @Override
-    public String getApi() {
-        return "http://10.120.226.40:8080/wangzhen/plugin/plugin.json";
+    override fun getApi(): String {
+        return "http://10.120.226.40:8080/wangzhen/plugin/plugin.json"
     }
 }

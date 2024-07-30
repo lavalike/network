@@ -1,25 +1,20 @@
-package com.wangzhen.network.sample.interceptor;
+package com.wangzhen.network.sample.interceptor
 
-import android.util.Log;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
+import android.util.Log
+import okhttp3.Interceptor
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 
 /**
  * UrlInterceptor
  * Created by wangzhen on 2020/4/17.
  */
-public class UrlInterceptor implements Interceptor {
-    @NotNull
-    @Override
-    public Response intercept(@NotNull Chain chain) throws IOException {
-        Request request = chain.request();
-        Log.e("TAG", "-> UrlInterceptor " + request.url().toString());
-        return chain.proceed(request);
+class UrlInterceptor : Interceptor {
+    @Throws(IOException::class)
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request: Request = chain.request()
+        Log.e("TAG", "-> UrlInterceptor " + request.url.toString())
+        return chain.proceed(request)
     }
 }
