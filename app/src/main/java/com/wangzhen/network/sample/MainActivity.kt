@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.wangzhen.network.callback.LoadingCallback
 import com.wangzhen.network.callback.ProgressCallback
 import com.wangzhen.network.loading.DefaultLoadingPage
+import com.wangzhen.network.manager.CallManager
 import com.wangzhen.network.sample.databinding.ActivityMainBinding
 import com.wangzhen.network.sample.entity.PluginVersion
 import com.wangzhen.network.sample.task.TestGetTask

@@ -9,8 +9,6 @@ import okhttp3.Call;
  * Created by wangzhen on 2020/4/15.
  */
 public interface Task {
-    void onSetupParams(Object... params);
-
     String getApi();
 
     Task put(String key, Object value);
@@ -23,7 +21,7 @@ public interface Task {
 
     Task setLoadingPage(LoadingPage page);
 
-    Call exe(Object... params);
+    Call exe();
 
     Call retry();
 }

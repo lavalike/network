@@ -47,8 +47,7 @@ public abstract class BaseTask<EntityType> implements Task, Callback {
     }
 
     @Override
-    public Call exe(Object... params) {
-        onSetupParams(params);
+    public Call exe() {
         return doTask();
     }
 
@@ -102,11 +101,6 @@ public abstract class BaseTask<EntityType> implements Task, Callback {
     @Override
     public Call retry() {
         return doTask();
-    }
-
-    @Override
-    public void onSetupParams(Object... params) {
-
     }
 
     @Override
